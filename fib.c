@@ -1,51 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_LEN 10
+/*
+./fib N METHOD
 
-unsigned long long iterativeFibonacci(unsigned long long n)
-{
-    unsigned long long result = 0;
-    unsigned long long value1 = 0;
-    unsigned long long value2 = 1;
+N = positive integer index
+METHOD = 'i' for iterative, 'r' for recursive
 
-    for (int i = 1; i <= n; i++)
-    {
-        result = value1 + value2;
-        value2 = value1;
-        value1 = result; 
+Can take an integer in the range of 0 to the largest possible integer,
+and outputs the first N Fibonacci numbers using the specified method
+*/
+
+#define MAX_LEN 1024
+
+unsigned long long iter_fib(unsigned long long fibIndex) {
+    
+    unsigned long long previous = 0;
+    unsigned long long result = 1;
+
+    for (int ix = 0; ix <= fibIndex - 2; ix++) {
+        unsigned long long temp = previous + result;
+        previous = result;
+        result = temp;   
     }
 
     return result;
 }
 
-unsigned long long recursiveFibonacci(unsigned long long n)
-{
-    if(n == 0)
-    {
-        return 0;
-    }
-    if (n == 1)
-    {
-        return 1;
-    }
+unsigned long long rec_fib(unsigned long long fibIndex) {
     
-    return recursiveFibonacci(n - 1) + recursiveFibonacci(n - 2);
-}
+    if(fibIndex < 2) {
+        return fibIndex;
+    }
 
+    return rec_fib(fibIndex - 1) + rec_fib(fibIndex - 2);
+}
+ 
 int main(int argc, char * argv[]) {
     
-    unsigned long long  N = atoi(argv[1]) - 1;
+    unsigned long long fibIndex = atoi(argv[1]) - 1;
 
-    if (*argv[2] == 'i')
-    {
-        printf("%llu", iterativeFibonacci(N));
+    if (*argv[2] == 'i') {
+        printf("%llu", iter_fib(fibIndex));
         printf("\n");
     }
 
-    if (*argv[2] == 'r')
-    {
-        printf("%llu", recursiveFibonacci(N));
+    if (*argv[2] == 'r') {
+        printf("%llu", rec_fib(fibIndex));
         printf("\n");
     }
 
